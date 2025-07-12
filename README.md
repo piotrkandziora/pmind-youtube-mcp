@@ -2,34 +2,36 @@
   <img src="logo.png" alt="PMIND YouTube MCP Server Logo" />
 </div>
 
+> ⚠️ **Alpha Software**: This MCP server is in early alpha stage and may have rough edges. Please report any issues you encounter.
+
 # PMIND YouTube MCP Server
 
 A Python implementation of the YouTube MCP (Model Context Protocol) server using FastMCP. This server provides tools to interact with YouTube Data API v3 and fetch video transcripts.
 
-## Features
+## 🎯 Features
 
 This MCP server provides comprehensive access to YouTube Data API v3 with additional AI-powered capabilities through Gemini integration.
 
-### Core Capabilities
+### 📦 Core Capabilities
 
-- **Video Management**: List, rate, update, delete videos, and manage uploads
-- **Search**: Full YouTube search with advanced filters
-- **Channel Operations**: Manage channel content, banners, and sections
-- **Playlists**: Create and manage playlists and their items
-- **Subscriptions**: Manage channel subscriptions
-- **Comments**: Read and write comments with moderation
-- **Captions**: Access and manage video captions
-- **Media**: Upload thumbnails and manage watermarks
-- **Metadata**: Access categories, regions, and languages
-- **AI Analysis**: Analyze videos with Gemini AI (optional)
+- **🎬 Video Management**: List, rate, update, delete videos, and manage uploads
+- **🔍 Search**: Full YouTube search with advanced filters
+- **📺 Channel Operations**: Manage channel content, banners, and sections
+- **📋 Playlists**: Create and manage playlists and their items
+- **🔔 Subscriptions**: Manage channel subscriptions
+- **💬 Comments**: Read and write comments with moderation
+- **📝 Captions**: Access and manage video captions
+- **🎨 Media**: Upload thumbnails and manage watermarks
+- **📊 Metadata**: Access categories, regions, and languages
+- **🤖 AI Analysis**: Analyze videos with Gemini AI
 
-### Key Features
+### ✨ Key Features
 
-- **OAuth Authentication**: Secure access to YouTube APIs
-- **Background Video Uploads**: Video uploads are handled by separate spawned processes, allowing non-blocking operation. Upload progress and state are tracked in JSON files (stored in `/tmp/pmind-youtube-mcp-uploads` by default), enabling you to start uploads and monitor their progress asynchronously
-- **No API Key Required**: For transcript extraction
-- **Batch Operations**: Efficient handling of multiple items
-- **Error Handling**: Graceful error reporting with detailed messages
+- **🔐 OAuth Authentication**: Full YouTube API access with secure authentication
+- **🚀 Background Video Uploads**: Video uploads spawn separate processes for non-blocking operation. Upload progress is tracked persistently, enabling you to start uploads and monitor them asynchronously
+- **📡 Comprehensive YouTube API Coverage**: Complete implementation of YouTube Data API v3 - videos, channels, playlists, comments, captions, subscriptions, and more
+- **🧠 AI-Powered Video Analysis**: Gemini integration for video content analysis, Q&A, and transcript generation
+- **📄 Raw Transcript Support**: Extract existing YouTube transcripts via youtube-transcript-api without API quota usage
 
 ## Installation & Setup
 
@@ -77,7 +79,13 @@ poetry install
   - `https://www.googleapis.com/auth/youtube`
   - `https://www.googleapis.com/auth/youtube.force-ssl`
 - Click **UPDATE** → **SAVE AND CONTINUE**
-- Add test users (your email) → **SAVE AND CONTINUE**
+- **IMPORTANT for Testing**: On the Test users page, click **+ ADD USERS**
+  - Add your Google account email address
+  - Add any other email addresses that will use the app during testing
+  - Click **ADD** → **SAVE AND CONTINUE**
+- Review the summary and click **BACK TO DASHBOARD**
+
+**Note**: Keep your app in **Testing** mode for personal use - no verification needed. Just add your email as a test user.
 
 #### Create OAuth 2.0 Credentials
 - Go to **APIs & Services** → **Credentials**
@@ -89,20 +97,6 @@ poetry install
 #### Download Credentials
 - Click **DOWNLOAD JSON** button in the popup
 - Save the file for use in Step 5
-
-The JSON should look like:
-```json
-{
-  "installed": {
-    "client_id": "123456789-abc.apps.googleusercontent.com",
-    "project_id": "your-project-name",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "client_secret": "GOCSPX-xxxxxxxxxxxx",
-    "redirect_uris": ["http://localhost"]
-  }
-}
-```
 
 ### Step 4: Configure the Server
 
@@ -141,7 +135,7 @@ This will:
 - Ask you to grant permissions for YouTube access
 - Save the authentication token to `~/.pmind-youtube-mcp/token.json`
 
-### Step 7: (Optional) Set Up Gemini AI Integration
+### Step 7: Set Up Gemini AI Integration
 
 To use AI-powered tools for video analysis:
 
@@ -194,12 +188,20 @@ Replace `/home/user/pmind-youtube-mcp` with the actual path where you cloned the
 - `CONFIG_DIR`: Override the default configuration directory (default: `~/.pmind-youtube-mcp`)
 - `YOUTUBE_RAW_TRANSCRIPT_LANG`: Default language for raw transcripts (default: 'en')
 - `YOUTUBE_UPLOAD_STATE_DIR`: Directory for upload state files (default: '/tmp/pmind-youtube-mcp-uploads')
-- `GEMINI_API_KEY`: API key for Gemini AI integration (optional)
+- `GEMINI_API_KEY`: API key for Gemini AI integration
 - `GEMINI_MODEL`: Gemini model to use (default: 'gemini-2.5-flash')
 
 ## Usage
 
 Once configured, you can start using the YouTube MCP server through your client. The server will automatically start when your client connects.
+
+### Example Prompts
+
+For comprehensive examples of how to use each tool, see [PROMPTS.md](PROMPTS.md). This file contains:
+- Example prompts for every tool
+- Examples organized by category  
+- OAuth requirements clearly marked
+- Quick start examples to get you going
 
 ### Manual Server Testing
 

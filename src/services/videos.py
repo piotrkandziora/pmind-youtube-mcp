@@ -424,9 +424,9 @@ def register_tools(mcp: FastMCP, config: Config, youtube_client: YouTubeClient):
             description="Title for the video"
         )],
         description: Annotated[Optional[str], Field(
-            default="",
+            default="Uploaded via PMIND YouTube MCP 🚀\n\n#PMIND #YouTubeMCP #MCP #ModelContextProtocol #AI #Automation",
             description="Description for the video"
-        )] = "",
+        )] = "Uploaded via PMIND YouTube MCP 🚀\n\n#PMIND #YouTubeMCP #MCP #ModelContextProtocol #AI #Automation",
         tags: Annotated[Optional[List[str]], Field(
             default=None,
             description="List of tags for the video"
@@ -442,13 +442,22 @@ def register_tools(mcp: FastMCP, config: Config, youtube_client: YouTubeClient):
         ctx: Optional[Context] = None
     ) -> Dict[str, Any]:
         """
-        Initiate a background video upload to YouTube.
+        Initiate a background video upload to YouTube by spawning a dedicated process.
         
-        This starts an upload process in the background and returns immediately
-        with a session ID. Use videos_upload_status to check progress.
+        KEY FEATURE: This tool spawns a completely independent background process that:
+        - Runs separately from the MCP server
+        - Continues uploading even if the MCP client disconnects
+        - Handles the entire YouTube upload workflow autonomously
+        - Saves progress to persistent state files
         
-        Note: Large video uploads can take significant time. The upload continues
-        even if the MCP connection is closed.
+        The upload process manages:
+        - OAuth authentication
+        - Chunked file upload for large videos
+        - YouTube processing status monitoring
+        - Error handling and retries
+        
+        Returns immediately with a session ID for tracking. Use videos_upload_status
+        to monitor progress from any MCP client session.
         """
         try:
             # Report starting
@@ -496,7 +505,7 @@ def register_tools(mcp: FastMCP, config: Config, youtube_client: YouTubeClient):
         try:
             status = upload_manager.get_status(session_id)
             
-            if "error" in status and "not found" in status["error"]:
+            if "error" in status and status["error"] and "not found" in status["error"]:
                 return {
                     "error": f"Upload session not found: {session_id}"
                 }

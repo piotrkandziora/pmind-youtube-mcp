@@ -552,6 +552,49 @@ class YouTubeClient:
             raise self._handle_error(e)
     
     @async_wrap
+    def playlist_items_list(self, **kwargs) -> Dict[str, Any]:
+        """List playlist items using YouTube Data API v3 playlistItems.list method"""
+        try:
+            request = self.youtube.playlistItems().list(**kwargs)
+            response = request.execute()
+            self._quota_used += 1  # PlaylistItems.list costs 1 quota unit
+            return response
+        except HttpError as e:
+            raise self._handle_error(e)
+    
+    @async_wrap
+    def playlist_items_insert(self, part: str, body: dict) -> Dict[str, Any]:
+        """Insert an item into a playlist"""
+        try:
+            request = self.youtube.playlistItems().insert(part=part, body=body)
+            response = request.execute()
+            self._quota_used += 50  # Insert costs 50 quota units
+            return response
+        except HttpError as e:
+            raise self._handle_error(e)
+    
+    @async_wrap
+    def playlist_items_update(self, part: str, body: dict) -> Dict[str, Any]:
+        """Update a playlist item"""
+        try:
+            request = self.youtube.playlistItems().update(part=part, body=body)
+            response = request.execute()
+            self._quota_used += 50  # Update costs 50 quota units
+            return response
+        except HttpError as e:
+            raise self._handle_error(e)
+    
+    @async_wrap
+    def playlist_items_delete(self, id: str) -> None:
+        """Delete a playlist item"""
+        try:
+            request = self.youtube.playlistItems().delete(id=id)
+            request.execute()
+            self._quota_used += 50  # Delete costs 50 quota units
+        except HttpError as e:
+            raise self._handle_error(e)
+    
+    @async_wrap
     def get_playlist_items(self, playlist_id: str, max_results: int = 50) -> List[Dict[str, Any]]:
         """Get videos from a playlist"""
         try:
