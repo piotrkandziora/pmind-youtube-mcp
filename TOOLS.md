@@ -1,210 +1,10 @@
-<div align="center">
-  <img src="logo.png" alt="PMIND YouTube MCP Server Logo" width="400" />
-</div>
+# PMIND YouTube MCP Tools Reference
 
-> ⚠️ **Alpha Software**: This MCP server is in early alpha stage and may have rough edges. Please report any issues you encounter.
+Complete documentation of all available tools in the YouTube MCP server.
 
-# PMIND YouTube MCP Server
+## Video Tools
 
-A Python implementation of the YouTube MCP (Model Context Protocol) server using FastMCP. This server provides tools to interact with YouTube Data API v3 and fetch video transcripts.
-
-## 🎯 Features
-
-This MCP server provides comprehensive access to YouTube Data API v3 with additional AI-powered capabilities through Gemini integration.
-
-### 📦 Core Capabilities
-
-- **🎬 Video Management**: List, rate, update, delete videos, and manage uploads
-- **🔍 Search**: Full YouTube search with advanced filters
-- **📺 Channel Operations**: Manage channel content, banners, and sections
-- **📋 Playlists**: Create and manage playlists and their items
-- **🔔 Subscriptions**: Manage channel subscriptions
-- **💬 Comments**: Read and write comments with moderation
-- **📝 Captions**: Access and manage video captions
-- **🎨 Media**: Upload thumbnails and manage watermarks
-- **📊 Metadata**: Access categories, regions, and languages
-- **🤖 AI Analysis**: Analyze videos with Gemini AI
-
-### ✨ Key Features
-
-- **🔐 OAuth Authentication**: Full YouTube API access with secure authentication
-- **🚀 Background Video Uploads**: Video uploads spawn separate processes for non-blocking operation. Upload progress is tracked persistently, enabling you to start uploads and monitor them asynchronously
-- **📡 Comprehensive YouTube API Coverage**: Complete implementation of YouTube Data API v3 - videos, channels, playlists, comments, captions, subscriptions, and more
-- **🧠 AI-Powered Video Analysis**: Gemini integration for video content analysis, Q&A, and transcript generation
-- **📄 Raw Transcript Support**: Extract existing YouTube transcripts via youtube-transcript-api without API quota usage
-
-## Installation & Setup
-
-### Step 1: Clone the Repository
-
-```bash
-git clone https://github.com/raveenplgithub/pmind-mcp-youtube.git
-cd pmind-youtube-mcp
-```
-
-### Step 2: Install Dependencies
-
-```bash
-# Install dependencies using Poetry
-poetry install
-```
-
-### Step 3: Set Up Google OAuth Credentials
-
-#### Access Google Cloud Console
-- Go to [https://console.cloud.google.com/](https://console.cloud.google.com/)
-- Sign in with your Google account
-
-#### Create or Select Project
-- Click the project dropdown at the top
-- Either select existing or click "NEW PROJECT"
-- Enter project name (e.g., "YouTube MCP Server")
-- Click "CREATE"
-
-#### Enable YouTube Data API v3
-- In left sidebar: **APIs & Services** → **Library**
-- Search for "YouTube Data API v3"
-- Click on it and press **ENABLE**
-
-#### Configure OAuth Consent Screen (First time only)
-- Go to **APIs & Services** → **OAuth consent screen**
-- Choose **External** and click **CREATE**
-- Fill required fields:
-  - App name: "YouTube MCP Server"
-  - User support email: Your email
-  - Developer contact: Your email
-- Click **SAVE AND CONTINUE**
-- On Scopes page, click **ADD OR REMOVE SCOPES**
-- Select these scopes:
-  - `https://www.googleapis.com/auth/youtube`
-  - `https://www.googleapis.com/auth/youtube.force-ssl`
-- Click **UPDATE** → **SAVE AND CONTINUE**
-- **IMPORTANT for Testing**: On the Test users page, click **+ ADD USERS**
-  - Add your Google account email address
-  - Add any other email addresses that will use the app during testing
-  - Click **ADD** → **SAVE AND CONTINUE**
-- Review the summary and click **BACK TO DASHBOARD**
-
-**Note**: Keep your app in **Testing** mode for personal use - no verification needed. Just add your email as a test user.
-
-#### Create OAuth 2.0 Credentials
-- Go to **APIs & Services** → **Credentials**
-- Click **+ CREATE CREDENTIALS** → **OAuth client ID**
-- Select **Desktop app** as Application type
-- Name it (e.g., "YouTube MCP Desktop Client")
-- Click **CREATE**
-
-#### Download Credentials
-- Click **DOWNLOAD JSON** button in the popup
-- Save the file for use in Step 5
-
-### Step 4: Configure the Server
-
-Run the configuration wizard:
-
-```bash
-poetry run pmind-youtube-mcp --configure
-```
-
-This will:
-- Prompt you for all configuration values
-- Create necessary directories
-- Generate the `.env` file automatically
-- Optionally let you paste your client credentials JSON directly
-- Show you where to place your client secrets file
-
-### Step 5: Store Client Secrets
-
-If you didn't paste the credentials during configuration, copy the downloaded file:
-
-```bash
-# Copy client secrets (adjust source path to where you downloaded it)
-cp ~/Downloads/client_*.json ~/.pmind-youtube-mcp/client_secrets.json
-```
-
-### Step 6: Authenticate
-
-Run the authentication command to set up OAuth:
-
-```bash
-poetry run pmind-youtube-mcp --auth
-```
-
-This will:
-- Open your browser for Google OAuth login
-- Ask you to grant permissions for YouTube access
-- Save the authentication token to `~/.pmind-youtube-mcp/token.json`
-
-### Step 7: Configure with Your Client
-
-#### For Claude Desktop App
-
-Add the MCP server to your Claude desktop configuration:
-
-```json
-{
-  "mcpServers": {
-    "youtube": {
-      "command": "poetry",
-      "args": ["run", "pmind-youtube-mcp"],
-      "cwd": "/path/to/pmind-youtube-mcp"
-    }
-  }
-}
-```
-
-Replace `/path/to/pmind-youtube-mcp` with the actual path where you cloned the repository.
-
-#### For Claude Code (CLI)
-
-Use the following command to add the server to Claude Code:
-
-```bash
-claude mcp add pmind-youtube-mcp "poetry run -C /home/user/pmind-youtube-mcp pmind-youtube-mcp"
-```
-
-Replace `/home/user/pmind-youtube-mcp` with the actual path where you cloned the repository.
-
-## Configuration Options
-
-### Environment Variables
-
-- `CONFIG_DIR`: Override the default configuration directory (default: `~/.pmind-youtube-mcp`)
-- `YOUTUBE_RAW_TRANSCRIPT_LANG`: Default language for raw transcripts (default: 'en')
-- `YOUTUBE_UPLOAD_STATE_DIR`: Directory for upload state files (default: '/tmp/pmind-youtube-mcp-uploads')
-- `GEMINI_API_KEY`: API key for Gemini AI integration
-- `GEMINI_MODEL`: Gemini model to use (default: 'gemini-2.5-flash')
-
-## Usage
-
-Once configured, you can start using the YouTube MCP server through your client. The server will automatically start when your client connects.
-
-### Example Prompts
-
-For comprehensive examples of how to use each tool, see [PROMPTS.md](PROMPTS.md).
-
-### Manual Server Testing
-
-To test the server manually:
-
-```bash
-# Run the MCP server
-poetry run pmind-youtube-mcp
-```
-
-### Authentication Management
-
-To re-authenticate or update credentials:
-
-```bash
-poetry run pmind-youtube-mcp --auth
-```
-
-## Tool Reference
-
-### Complete List of Available Tools
-
-#### 1. **videos_list**
+### 1. **videos_list**
 List videos by various criteria (ID, chart, or user rating).
 
 **Parameters:**
@@ -223,7 +23,7 @@ List videos by various criteria (ID, chart, or user rating).
 - "List videos I've liked"
 - "Get trending gaming videos in Japan"
 
-#### 2. **videos_get_rating**
+### 2. **videos_get_rating**
 Get the ratings you've given to specific videos.
 
 **Parameters:**
@@ -233,7 +33,7 @@ Get the ratings you've given to specific videos.
 - "Check my rating for video dQw4w9WgXcQ"
 - "What videos have I rated from this list?"
 
-#### 3. **videos_rate**
+### 3. **videos_rate**
 Like, dislike, or remove rating from a video.
 
 **Parameters:**
@@ -245,7 +45,7 @@ Like, dislike, or remove rating from a video.
 - "Remove my rating from video abc123"
 - "Dislike this video"
 
-#### 4. **videos_update**
+### 4. **videos_update**
 Update your video's metadata (requires ownership).
 
 **Parameters:**
@@ -262,7 +62,7 @@ Update your video's metadata (requires ownership).
 - "Change video privacy to unlisted"
 - "Add tags python, programming, tutorial to my video"
 
-#### 5. **videos_delete**
+### 5. **videos_delete**
 Delete a video you own.
 
 **Parameters:**
@@ -272,7 +72,7 @@ Delete a video you own.
 - "Delete video abc123xyz"
 - "Remove my video from YouTube"
 
-#### 6. **videos_report_abuse**
+### 6. **videos_report_abuse**
 Report a video for abusive content.
 
 **Parameters:**
@@ -285,7 +85,7 @@ Report a video for abusive content.
 - "Report video for violent content"
 - "Flag this video as spam"
 
-#### 7. **videos_upload_initiate**
+### 7. **videos_upload_initiate**
 Start a background video upload to YouTube.
 
 **Parameters:**
@@ -303,7 +103,7 @@ Start a background video upload to YouTube.
 
 **Returns:** Session ID for tracking the upload progress
 
-#### 8. **videos_upload_status**
+### 8. **videos_upload_status**
 Check the status of a background video upload.
 
 **Parameters:**
@@ -316,7 +116,7 @@ Check the status of a background video upload.
 
 **Returns:** Current status (starting, uploading, processing, completed, failed, cancelled), progress percentage, and video ID when completed
 
-#### 9. **videos_upload_list**
+### 9. **videos_upload_list**
 List all upload sessions.
 
 **Parameters:**
@@ -327,7 +127,7 @@ List all upload sessions.
 - "List active uploads only"
 - "What videos am I currently uploading?"
 
-#### 10. **videos_upload_cancel**
+### 10. **videos_upload_cancel**
 Cancel a background video upload.
 
 **Parameters:**
@@ -340,7 +140,9 @@ Cancel a background video upload.
 
 **Note:** Partially uploaded videos are not saved on YouTube.
 
-#### 11. **search_list**
+## Search Tools
+
+### 11. **search_list**
 Comprehensive YouTube search with full API v3 parameters support.
 
 **Parameters:**
@@ -375,7 +177,9 @@ Comprehensive YouTube search with full API v3 parameters support.
 - "Find Creative Commons licensed educational videos"
 - "Search for channels about cooking sorted by subscriber count"
 
-#### 12. **channels_list**
+## Channel Tools
+
+### 12. **channels_list**
 List channels by various criteria (requires exactly one filter).
 
 **Parameters:**
@@ -397,7 +201,14 @@ List channels by various criteria (requires exactly one filter).
 
 **Note:** Must specify exactly one filter: for_handle, for_username, id, managed_by_me, or mine.
 
-#### 14. **channels_get_channel**
+### 13. **channels_update**
+Update channel metadata (requires OAuth and channel ownership).
+
+**Parameters:**
+- `channel_id` (required): Channel ID to update
+- Various metadata fields depending on what you want to update
+
+### 14. **channels_get_channel**
 Get information about a YouTube channel.
 
 **Parameters:**
@@ -408,7 +219,7 @@ Get information about a YouTube channel.
 - "Show me details for this YouTube channel ID"
 - "What's the subscriber count for channel UCddiUEpeqJcYeBxX1IVBKvQ"
 
-#### 15. **channels_list_videos**
+### 15. **channels_list_videos**
 List videos from a specific channel.
 
 **Parameters:**
@@ -420,7 +231,9 @@ List videos from a specific channel.
 - "List 20 videos from channel UCddiUEpeqJcYeBxX1IVBKvQ"
 - "Get all videos from this YouTube channel"
 
-#### 16. **playlists_get_playlist**
+## Playlist Tools
+
+### 16. **playlists_get_playlist**
 Get information about a YouTube playlist.
 
 **Parameters:**
@@ -431,7 +244,7 @@ Get information about a YouTube playlist.
 - "Show me details for this YouTube playlist"
 - "How many videos are in playlist PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf"
 
-#### 17. **playlists_get_playlist_items**
+### 17. **playlists_get_playlist_items**
 Get videos in a YouTube playlist.
 
 **Parameters:**
@@ -443,7 +256,70 @@ Get videos in a YouTube playlist.
 - "Show me 30 videos from this playlist"
 - "Get all videos in this YouTube playlist"
 
-#### 18. **subscriptions_list_channel_subscriptions**
+### 18. **playlists_list**
+List playlists by various criteria.
+
+**Parameters:**
+- `part` (required): Properties to include
+- `channel_id` (optional): Filter by channel
+- `mine` (optional): Get authenticated user's playlists
+- `max_results` (optional): Maximum results
+
+### 19. **playlists_insert**
+Create a new playlist.
+
+**Parameters:**
+- `title` (required): Playlist title
+- `description` (optional): Playlist description
+- `privacy_status` (optional): "private", "public", or "unlisted"
+
+### 20. **playlists_update**
+Update playlist metadata.
+
+**Parameters:**
+- `id` (required): Playlist ID
+- Various metadata fields
+
+### 21. **playlists_delete**
+Delete a playlist.
+
+**Parameters:**
+- `id` (required): Playlist ID to delete
+
+### 22. **playlist_items_list**
+List items in a playlist.
+
+**Parameters:**
+- `playlist_id` (required): Playlist ID
+- `part` (required): Properties to include
+- `max_results` (optional): Maximum results
+
+### 23. **playlist_items_insert**
+Add a video to a playlist.
+
+**Parameters:**
+- `playlist_id` (required): Playlist ID
+- `video_id` (required): Video ID to add
+- `position` (optional): Position in playlist
+
+### 24. **playlist_items_update**
+Update playlist item (e.g., change position).
+
+**Parameters:**
+- `id` (required): Playlist item ID
+- `playlist_id` (required): Playlist ID
+- `video_id` (required): Video ID
+- `position` (optional): New position
+
+### 25. **playlist_items_delete**
+Remove a video from a playlist.
+
+**Parameters:**
+- `id` (required): Playlist item ID to delete
+
+## Subscription Tools
+
+### 26. **subscriptions_list_channel_subscriptions**
 List public subscriptions for a channel.
 
 **Parameters:**
@@ -455,7 +331,7 @@ List public subscriptions for a channel.
 - "Show subscriptions for channel UC_x5XG1OV2P6uZZ5FSM9Ttw"
 - "List channels this YouTuber subscribes to"
 
-#### 19. **subscriptions_list_my_subscriptions**
+### 27. **subscriptions_list_my_subscriptions**
 List your own subscriptions (requires OAuth).
 
 **Parameters:**
@@ -467,7 +343,7 @@ List your own subscriptions (requires OAuth).
 - "List channels I'm subscribed to"
 - "Am I subscribed to channel UC_x5XG1OV2P6uZZ5FSM9Ttw?"
 
-#### 20. **subscriptions_list_my_recent_subscribers**
+### 28. **subscriptions_list_my_recent_subscribers**
 List recent subscribers to your channel.
 
 **Parameters:**
@@ -477,7 +353,7 @@ List recent subscribers to your channel.
 - "Show my recent subscribers"
 - "Who recently subscribed to my channel?"
 
-#### 21. **subscriptions_insert**
+### 29. **subscriptions_insert**
 Subscribe to a YouTube channel.
 
 **Parameters:**
@@ -487,7 +363,7 @@ Subscribe to a YouTube channel.
 - "Subscribe to channel UC_x5XG1OV2P6uZZ5FSM9Ttw"
 - "Follow this YouTube channel"
 
-#### 22. **subscriptions_delete**
+### 30. **subscriptions_delete**
 Unsubscribe from a channel.
 
 **Parameters:**
@@ -497,7 +373,9 @@ Unsubscribe from a channel.
 - "Unsubscribe from subscription SUB123456"
 - "Remove this subscription"
 
-#### 23. **captions_list**
+## Caption Tools
+
+### 31. **captions_list**
 List caption tracks available for a video.
 
 **Parameters:**
@@ -509,7 +387,7 @@ List caption tracks available for a video.
 - "Show me subtitle tracks for this video"
 - "What languages are available for this video's captions?"
 
-#### 24. **captions_download**
+### 32. **captions_download**
 Download the content of a caption track.
 
 **Parameters:**
@@ -521,7 +399,7 @@ Download the content of a caption track.
 - "Download captions CAP123 in SRT format"
 - "Get Spanish translation of caption track CAP456"
 
-#### 25. **captions_update**
+### 33. **captions_update**
 Update caption track metadata.
 
 **Parameters:**
@@ -533,7 +411,7 @@ Update caption track metadata.
 - "Publish draft captions CAP123"
 - "Update caption track sync timing"
 
-#### 26. **captions_delete**
+### 34. **captions_delete**
 Delete a caption track.
 
 **Parameters:**
@@ -543,7 +421,9 @@ Delete a caption track.
 - "Delete caption track CAP123"
 - "Remove these captions from my video"
 
-#### 27. **comments_list**
+## Comment Tools
+
+### 35. **comments_list**
 List comment replies.
 
 **Parameters:**
@@ -556,7 +436,7 @@ List comment replies.
 - "List replies to comment COMMENT123"
 - "Show me comments by ID"
 
-#### 28. **comments_insert**
+### 36. **comments_insert**
 Reply to a comment.
 
 **Parameters:**
@@ -567,7 +447,7 @@ Reply to a comment.
 - "Reply 'Thanks!' to comment COMMENT123"
 - "Add a response to this comment"
 
-#### 29. **comments_update**
+### 37. **comments_update**
 Update a comment.
 
 **Parameters:**
@@ -578,7 +458,7 @@ Update a comment.
 - "Edit comment COMMENT123 to say 'Updated response'"
 - "Change my comment text"
 
-#### 30. **comments_delete**
+### 38. **comments_delete**
 Delete a comment.
 
 **Parameters:**
@@ -588,7 +468,7 @@ Delete a comment.
 - "Delete comment COMMENT123"
 - "Remove this comment"
 
-#### 31. **comments_set_moderation_status**
+### 39. **comments_set_moderation_status**
 Set comment moderation status.
 
 **Parameters:**
@@ -601,7 +481,7 @@ Set comment moderation status.
 - "Reject spam comment and ban author"
 - "Publish held comment"
 
-#### 32. **comment_threads_list**
+### 40. **comment_threads_list**
 List top-level comments on videos or channels.
 
 **Parameters:**
@@ -616,7 +496,7 @@ List top-level comments on videos or channels.
 - "Show channel comments"
 - "Get comment thread details"
 
-#### 33. **comment_threads_insert**
+### 41. **comment_threads_insert**
 Create a new top-level comment.
 
 **Parameters:**
@@ -628,7 +508,9 @@ Create a new top-level comment.
 - "Comment 'Great video!' on video dQw4w9WgXcQ"
 - "Post a comment on this channel"
 
-#### 34. **members_list**
+## Membership Tools
+
+### 42. **members_list**
 List channel members (requires channel memberships access).
 
 **Parameters:**
@@ -640,7 +522,7 @@ List channel members (requires channel memberships access).
 - "List my channel members"
 - "Show recent membership updates"
 
-#### 35. **memberships_levels_list**
+### 43. **memberships_levels_list**
 List membership levels for a channel.
 
 **Parameters:**
@@ -650,7 +532,9 @@ List membership levels for a channel.
 - "Show my channel membership tiers"
 - "List membership levels"
 
-#### 36. **thumbnails_set**
+## Media Tools
+
+### 44. **thumbnails_set**
 Upload a custom thumbnail for a video.
 
 **Parameters:**
@@ -661,7 +545,7 @@ Upload a custom thumbnail for a video.
 - "Set thumbnail for video dQw4w9WgXcQ from image.jpg"
 - "Upload custom thumbnail"
 
-#### 37. **watermarks_set**
+### 45. **watermarks_set**
 Set a watermark for your channel.
 
 **Parameters:**
@@ -675,7 +559,7 @@ Set a watermark for your channel.
 - "Set channel watermark in bottom right corner"
 - "Add watermark that appears after 10 seconds"
 
-#### 38. **watermarks_unset**
+### 46. **watermarks_unset**
 Remove watermark from your channel.
 
 **Parameters:**
@@ -685,7 +569,72 @@ Remove watermark from your channel.
 - "Remove channel watermark"
 - "Delete my watermark"
 
-#### 39. **video_categories_list**
+### 47. **channel_banners_insert**
+Upload a channel banner image.
+
+**Parameters:**
+- `image_path` (required): Path to banner image
+
+### 48. **playlist_images_list**
+List playlist thumbnail images.
+
+**Parameters:**
+- `playlist_id` (required): Playlist ID
+
+### 49. **playlist_images_insert**
+Upload playlist thumbnail.
+
+**Parameters:**
+- `playlist_id` (required): Playlist ID
+- `image_path` (required): Path to image
+
+### 50. **playlist_images_update**
+Update playlist thumbnail.
+
+**Parameters:**
+- `id` (required): Image ID
+- `playlist_id` (required): Playlist ID
+- `image_path` (required): Path to new image
+
+### 51. **playlist_images_delete**
+Delete playlist thumbnail.
+
+**Parameters:**
+- `id` (required): Image ID to delete
+
+## Channel Section Tools
+
+### 52. **channel_sections_list**
+List channel sections.
+
+**Parameters:**
+- `part` (required): Properties to include
+- `channel_id` (optional): Channel ID
+- `mine` (optional): Authenticated user's sections
+
+### 53. **channel_sections_insert**
+Create a channel section.
+
+**Parameters:**
+- `type` (required): Section type
+- Various section-specific parameters
+
+### 54. **channel_sections_update**
+Update a channel section.
+
+**Parameters:**
+- `id` (required): Section ID
+- Various update parameters
+
+### 55. **channel_sections_delete**
+Delete a channel section.
+
+**Parameters:**
+- `id` (required): Section ID to delete
+
+## Metadata Tools
+
+### 56. **video_categories_list**
 List video categories available in a region.
 
 **Parameters:**
@@ -697,7 +646,7 @@ List video categories available in a region.
 - "List video categories in the US"
 - "Show available categories for uploads"
 
-#### 40. **i18n_regions_list**
+### 57. **i18n_regions_list**
 List content regions supported by YouTube.
 
 **Parameters:**
@@ -708,7 +657,7 @@ List content regions supported by YouTube.
 - "List all YouTube regions"
 - "Show supported countries"
 
-#### 41. **i18n_languages_list**
+### 58. **i18n_languages_list**
 List UI languages supported by YouTube.
 
 **Parameters:**
@@ -719,7 +668,9 @@ List UI languages supported by YouTube.
 - "List YouTube interface languages"
 - "Show available UI languages"
 
-#### 42. **transcripts_get_transcript**
+## Transcript Tools
+
+### 59. **transcripts_get_transcript**
 Get the raw transcript/captions from YouTube's existing subtitles (no API key required).
 
 **Note**: This retrieves only the existing captions/subtitles that YouTube already has. It does NOT generate new transcripts. For AI-powered transcript generation, use `gemini_video_transcript`.
@@ -738,7 +689,9 @@ Get the raw transcript/captions from YouTube's existing subtitles (no API key re
 - "Show me the Spanish captions for video abc123xyz"
 - "Retrieve YouTube's subtitles for this video"
 
-#### 43. **gemini_analyze_youtube_video**
+## AI-Powered Tools (Gemini)
+
+### 60. **gemini_analyze_youtube_video**
 Analyze a YouTube video using Google's Gemini AI.
 
 **Parameters:**
@@ -752,7 +705,7 @@ Analyze a YouTube video using Google's Gemini AI.
 - "Extract the tutorial steps from this video"
 - "Identify any technical concepts explained in the video"
 
-#### 44. **gemini_compare_youtube_videos**
+### 61. **gemini_compare_youtube_videos**
 Compare multiple YouTube videos using Gemini AI.
 
 **Parameters:**
@@ -765,7 +718,7 @@ Compare multiple YouTube videos using Gemini AI.
 - "What are the differences in approach between these tutorials?"
 - "Which video provides the most comprehensive explanation?"
 
-#### 45. **gemini_video_qa**
+### 62. **gemini_video_qa**
 Ask multiple questions about a YouTube video.
 
 **Parameters:**
@@ -779,7 +732,7 @@ Ask multiple questions about a YouTube video.
 - "Get timestamps for when specific topics are discussed"
 - "Fact-check the claims made in this video"
 
-#### 46. **gemini_video_transcript**
+### 63. **gemini_video_transcript**
 Generate a NEW transcript of a YouTube video using Gemini AI's video understanding.
 
 **Note**: This uses Gemini AI to analyze both audio AND visual content to generate transcripts. Unlike `transcripts_get_transcript` which only retrieves existing YouTube captions, this creates new transcripts and can include visual descriptions.
@@ -796,68 +749,22 @@ Generate a NEW transcript of a YouTube video using Gemini AI's video understandi
 - "Generate a transcript that includes visual descriptions"
 - "Transcribe this video with speaker segments using AI"
 
-### Understanding YouTube IDs
+## Understanding YouTube IDs
 
 - **Video ID**: The part after `v=` in URLs like `youtube.com/watch?v=dQw4w9WgXcQ`
 - **Channel ID**: Usually starts with `UC` and is 24 characters long
 - **Playlist ID**: Usually starts with `PL` or `UU` and is 34 characters long
 
-### Common Use Cases
+## OAuth Requirements
 
-1. **Research and Analysis**
-   - Search for videos on a topic and analyze their metadata
-   - Compare view counts and engagement across videos
-   - Study channel growth by examining video publication dates
+Many tools require OAuth authentication. These are marked with "requires OAuth" in their descriptions. Some operations also require ownership of the content (channel, video, playlist).
 
-2. **Content Discovery**
-   - Find popular videos in a niche
-   - Explore channels with specific content
-   - Browse curated playlists
+## API Quota Usage
 
-3. **Transcript Analysis**
-   - Extract transcripts for accessibility
-   - Analyze video content without watching
-   - Translate content using transcripts
+Different operations use different amounts of YouTube API quota:
+- **Read operations**: 1 unit (most list operations)
+- **Search**: 100 units
+- **Write operations**: 50 units (insert, update, delete)
+- **Special operations**: Varies (e.g., video upload uses 1600 units)
 
-4. **Channel Monitoring**
-   - Track new uploads from specific channels
-   - Monitor channel statistics
-   - Analyze upload patterns
-
-### Error Handling
-
-The server will return error messages for common issues:
-- **"API quota exceeded"**: You've hit the daily limit
-- **"Resource not found"**: Invalid video/channel/playlist ID
-- **"Invalid request parameters"**: Check your input format
-- **"Transcripts are disabled"**: Video doesn't allow transcripts
-
-## API Quota Management
-
-The YouTube Data API has quota limits. This server tracks quota usage:
-
-**Read Operations (1 unit):**
-- Videos.list, Channels.list, Playlists.list
-- PlaylistItems.list, Comments.list, CommentThreads.list
-- Captions.list, ChannelSections.list, Members.list
-- MembershipsLevels.list, VideoCategories.list
-- i18nRegions.list, i18nLanguages.list
-
-**Search Operations (100 units):**
-- Search.list
-
-**Write Operations (50 units):**
-- Insert, Update, Delete operations for most resources
-- Videos.rate, Videos.reportAbuse
-- Comments.setModerationStatus
-- Watermarks.set, Watermarks.unset
-
-**Special Operations:**
-- Captions.download: No quota cost (direct download)
-- Thumbnails.set: 50 units (requires file upload)
-- ChannelBanners.insert: 50 units (requires file upload)
-
-Default quota is 10,000 units per day.
-
-
-
+Default daily quota is 10,000 units.
