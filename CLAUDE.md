@@ -4,43 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
-### Environment Setup
+### Setup
 ```bash
-# Install dependencies using Poetry
+# Install dependencies
+poetry install
+
+# Install in development mode with extras
 poetry install --with dev
-
-# Activate virtual environment
-poetry shell
-
-# Or install directly with pip
-pip install -e .
 ```
 
 ### Running the Server
 ```bash
 # Run with Poetry
-poetry run python -m src.server
+poetry run pmind-youtube-mcp
 
-# Run directly (after poetry shell)
-python -m src.server
-
-# Run using the installed script
+# Or activate shell and run directly
+poetry shell
 pmind-youtube-mcp
-
-# Run with FastMCP CLI
-fastmcp run src/server.py
 ```
 
 ### Code Quality
 ```bash
-# Format code with Black
+# Format code
 poetry run black src/
 
-# Lint with Ruff
+# Lint code
 poetry run ruff check src/
-
-# Run tests (when implemented)
-poetry run pytest
 ```
 
 ## Architecture Overview
