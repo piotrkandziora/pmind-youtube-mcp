@@ -190,12 +190,16 @@ def configure_interactive():
     print("\nThis wizard will help you set up the PMIND MCP Youtube server.\n")
     
     # Get configuration values
+    # Calculate default paths based on user's home directory
+    default_config_dir = Path.home() / ".pmind-youtube-mcp"
+    default_upload_dir = Path("/tmp") / "pmind-youtube-mcp-uploads"
+    
     # Ask for configuration directory
-    config_dir_input = input("Configuration directory (e.g. /home/user/.pmind-youtube-mcp): ").strip()
+    config_dir_input = input(f"Configuration directory [{default_config_dir}]: ").strip()
     if not config_dir_input:
-        print("✗ Configuration directory is required")
-        sys.exit(1)
-    config_dir = Path(config_dir_input)
+        config_dir = default_config_dir
+    else:
+        config_dir = Path(config_dir_input)
     
     # Client secrets and token files are always in CONFIG_DIR
     client_secrets_path = str(config_dir / "client_secrets.json")
@@ -205,10 +209,11 @@ def configure_interactive():
     if not transcript_lang:
         transcript_lang = "en"
     
-    upload_dir = input("Upload state directory (e.g. /tmp/pmind-youtube-mcp-uploads): ").strip()
-    if not upload_dir:
-        print("✗ Upload state directory is required")
-        sys.exit(1)
+    upload_dir_input = input(f"Upload state directory [{default_upload_dir}]: ").strip()
+    if not upload_dir_input:
+        upload_dir = str(default_upload_dir)
+    else:
+        upload_dir = upload_dir_input
     
     gemini_key = input("Gemini API key (optional, press Enter to skip): ").strip()
     
