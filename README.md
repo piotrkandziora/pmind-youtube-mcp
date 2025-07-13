@@ -153,11 +153,14 @@ claude mcp add pmind-youtube-mcp -- uv run --directory /path/to/pmind-youtube-mc
 
 ### Environment Variables
 
-- `CONFIG_DIR`: Override the default configuration directory (default: `~/.pmind-youtube-mcp`)
-- `YOUTUBE_RAW_TRANSCRIPT_LANG`: Default language for raw transcripts (default: 'en')
-- `YOUTUBE_UPLOAD_STATE_DIR`: Directory for upload state files (default: '/tmp/pmind-youtube-mcp-uploads')
-- `GEMINI_API_KEY`: API key for Gemini AI integration
-- `GEMINI_MODEL`: Gemini model to use (default: 'gemini-2.5-flash')
+Required:
+- `CONFIG_DIR`: Configuration directory path
+- `YOUTUBE_UPLOAD_STATE_DIR`: Directory for upload state files
+- `YOUTUBE_RAW_TRANSCRIPT_LANG`: Default language for raw transcripts
+- `GEMINI_MODEL`: Gemini model to use
+
+Optional:
+- `GEMINI_API_KEY`: API key for Gemini AI integration (only required if using Gemini tools)
 
 ## Usage
 

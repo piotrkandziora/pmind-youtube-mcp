@@ -7,7 +7,7 @@ import argparse
 import logging
 from pathlib import Path
 from fastmcp import FastMCP
-from .config import Config, get_default_config_dir
+from .config import Config
 from .services import (
     videos, channels, playlists, transcripts, subscriptions, search,
     captions, channel_banners, channel_sections, comments, comment_threads,
@@ -190,14 +190,12 @@ def configure_interactive():
     print("\nThis wizard will help you set up the PMIND MCP Youtube server.\n")
     
     # Get configuration values
-    default_config_dir = get_default_config_dir()
-    
     # Ask for configuration directory
-    config_dir_input = input(f"Configuration directory [{default_config_dir}]: ").strip()
-    if config_dir_input:
-        config_dir = Path(os.path.expanduser(config_dir_input))
-    else:
-        config_dir = default_config_dir
+    config_dir_input = input("Configuration directory (e.g. /home/user/.pmind-youtube-mcp): ").strip()
+    if not config_dir_input:
+        print("✗ Configuration directory is required")
+        sys.exit(1)
+    config_dir = Path(config_dir_input)
     
     # Client secrets and token files are always in CONFIG_DIR
     client_secrets_path = str(config_dir / "client_secrets.json")
@@ -207,9 +205,10 @@ def configure_interactive():
     if not transcript_lang:
         transcript_lang = "en"
     
-    upload_dir = input("Upload state directory [/tmp/pmind-youtube-mcp-uploads]: ").strip()
+    upload_dir = input("Upload state directory (e.g. /tmp/pmind-youtube-mcp-uploads): ").strip()
     if not upload_dir:
-        upload_dir = "/tmp/pmind-youtube-mcp-uploads"
+        print("✗ Upload state directory is required")
+        sys.exit(1)
     
     gemini_key = input("Gemini API key (optional, press Enter to skip): ").strip()
     
@@ -221,10 +220,7 @@ def configure_interactive():
     print("\nCreating directories...")
     directories_to_create = set()
     
-    # Add config directory if needed (expand ~ to home directory)
-    client_secrets_path = os.path.expanduser(client_secrets_path)
-    token_path = os.path.expanduser(token_path)
-    upload_dir = os.path.expanduser(upload_dir)
+    # Add config directory if needed
     
     client_secrets_dir = Path(client_secrets_path).parent
     token_dir = Path(token_path).parent
@@ -243,16 +239,10 @@ def configure_interactive():
     print("\nWriting configuration to .env...")
     env_content = f"""# PMIND Youtube MCP Configuration
 
-"""
-    
-    # Only write CONFIG_DIR if it's different from default
-    if config_dir != default_config_dir:
-        env_content += f"""# Configuration directory
+# Configuration directory
 CONFIG_DIR={config_dir}
 
-"""
-    
-    env_content += f"""# Default language for raw transcripts
+# Default language for raw transcripts
 YOUTUBE_RAW_TRANSCRIPT_LANG={transcript_lang}
 
 # Directory for upload state files
