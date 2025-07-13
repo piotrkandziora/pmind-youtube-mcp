@@ -312,7 +312,7 @@ GEMINI_MODEL={gemini_model}
             # Final instructions
             print("\n" + "=" * 40)
             print("\nConfiguration complete! Next step:")
-            print("Run: poetry run pmind-youtube-mcp --auth")
+            print("Run: uv run pmind-youtube-mcp --auth")
             show_manual_instructions = False
         except Exception as e:
             print(f"\n✗ Failed to save client secrets: {e}")
@@ -325,7 +325,7 @@ GEMINI_MODEL={gemini_model}
         print("\nNext steps:")
         print("1. Download OAuth client secrets from Google Cloud Console")
         print(f"2. Save as: {client_secrets_path}")
-        print("3. Run: poetry run pmind-youtube-mcp --auth")
+        print("3. Run: uv run pmind-youtube-mcp --auth")
         print("\nFor detailed instructions, see Step 3 in the README.")
     
 

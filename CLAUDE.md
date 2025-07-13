@@ -7,29 +7,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Setup
 ```bash
 # Install dependencies
-poetry install
+uv sync
 
-# Install in development mode with extras
-poetry install --with dev
+# Install specific Python version if needed
+uv python install 3.12
 ```
 
 ### Running the Server
 ```bash
-# Run with Poetry
-poetry run pmind-youtube-mcp
+# Run with uv
+uv run pmind-youtube-mcp
 
-# Or activate shell and run directly
-poetry shell
-pmind-youtube-mcp
+# Run with specific Python version
+uv run --python 3.12 pmind-youtube-mcp
 ```
 
 ### Code Quality
 ```bash
 # Format code
-poetry run black src/
+uv run black src/
 
 # Lint code
-poetry run ruff check src/
+uv run ruff check src/
 ```
 
 ## Architecture Overview

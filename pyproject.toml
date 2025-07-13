@@ -1,29 +1,39 @@
-[tool.poetry]
+[project]
 name = "pmind-youtube-mcp"
 version = "0.1.0"
 description = "YouTube Data API MCP server built with FastMCP"
-authors = ["Piotr Kandziora <raveenpl@gmail.com>"]
+authors = [{ name = "Piotr Kandziora", email = "raveenpl@gmail.com" }]
+requires-python = ">=3.12,<3.14"
 readme = "README.md"
 license = "MIT"
-keywords = ["mcp", "youtube", "api", "fastmcp", "model-context-protocol"]
-packages = [{include = "src"}]
+keywords = [
+    "mcp",
+    "youtube",
+    "api",
+    "fastmcp",
+    "model-context-protocol",
+]
+dependencies = [
+    "pydantic>=2.11.7,<3",
+    "google-api-python-client>=2.176.0,<3",
+    "fastmcp>=2.10.4,<3",
+    "python-dotenv>=1.1.1,<2",
+    "youtube-transcript-api>=1.1.1,<2",
+    "google-auth-oauthlib>=1.2.2,<2",
+    "google>=3.0.0,<4",
+    "google-genai>=0.1.0,<0.2",
+    "psutil>=7.0.0,<8",
+]
 
-[tool.poetry.scripts]
+[project.scripts]
 pmind-youtube-mcp = "src.server:main"
 
-[tool.poetry.dependencies]
-python = ">=3.12,<3.14"
-pydantic = "^2.11.7"
-google-api-python-client = "^2.176.0"
-fastmcp = "^2.10.4"
-python-dotenv = "^1.1.1"
-youtube-transcript-api = "^1.1.1"
-google-auth-oauthlib = "^1.2.2"
-google = "^3.0.0"
-google-genai = "^0.1.0"
-psutil = "^7.0.0"
+[tool.hatch.build.targets.sdist]
+include = ["src"]
 
+[tool.hatch.build.targets.wheel]
+include = ["src"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

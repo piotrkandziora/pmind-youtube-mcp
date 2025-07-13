@@ -41,8 +41,8 @@ cd pmind-youtube-mcp
 ### Step 2: Install Dependencies
 
 ```bash
-# Install dependencies using Poetry
-poetry install
+# Install dependencies using uv
+uv sync
 ```
 
 ### Step 3: Set Up Google OAuth Credentials
@@ -92,14 +92,14 @@ poetry install
 
 #### Download Credentials
 - Click **DOWNLOAD JSON** button in the popup
-- Save the file for use in Step 5
+- Save the file for use in Step 4
 
 ### Step 4: Configure the Server
 
 Run the configuration wizard:
 
 ```bash
-poetry run pmind-youtube-mcp --configure
+uv run pmind-youtube-mcp --configure
 ```
 
 This will:
@@ -109,21 +109,14 @@ This will:
 - Optionally let you paste your client credentials JSON directly
 - Show you where to place your client secrets file
 
-### Step 5: Store Client Secrets
+If you didn't paste the credentials during configuration, you'll need to manually copy the downloaded file to `~/.pmind-youtube-mcp/client_secrets.json`.
 
-If you didn't paste the credentials during configuration, copy the downloaded file:
-
-```bash
-# Copy client secrets (adjust source path to where you downloaded it)
-cp ~/Downloads/client_*.json ~/.pmind-youtube-mcp/client_secrets.json
-```
-
-### Step 6: Authenticate
+### Step 5: Authenticate
 
 Run the authentication command to set up OAuth:
 
 ```bash
-poetry run pmind-youtube-mcp --auth
+uv run pmind-youtube-mcp --auth
 ```
 
 This will:
@@ -131,19 +124,16 @@ This will:
 - Ask you to grant permissions for YouTube access
 - Save the authentication token to `~/.pmind-youtube-mcp/token.json`
 
-### Step 7: Configure with Your Client
+### Step 6: Configure with Your Client
 
-#### For Claude Desktop App
-
-Add the MCP server to your Claude desktop configuration:
+Add the MCP server to your client's MCP configuration:
 
 ```json
 {
   "mcpServers": {
-    "youtube": {
-      "command": "poetry",
-      "args": ["run", "pmind-youtube-mcp"],
-      "cwd": "/path/to/pmind-youtube-mcp"
+    "pmind-youtube": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/pmind-youtube-mcp", "pmind-youtube-mcp"]
     }
   }
 }
@@ -153,13 +143,11 @@ Replace `/path/to/pmind-youtube-mcp` with the actual path where you cloned the r
 
 #### For Claude Code (CLI)
 
-Use the following command to add the server to Claude Code:
+Use the following command to add the server:
 
 ```bash
-claude mcp add pmind-youtube-mcp "poetry run -C /home/user/pmind-youtube-mcp pmind-youtube-mcp"
+claude mcp add pmind-youtube-mcp -- uv run --directory /path/to/pmind-youtube-mcp pmind-youtube-mcp
 ```
-
-Replace `/home/user/pmind-youtube-mcp` with the actual path where you cloned the repository.
 
 ## Configuration Options
 
@@ -185,7 +173,7 @@ To test the server manually:
 
 ```bash
 # Run the MCP server
-poetry run pmind-youtube-mcp
+uv run pmind-youtube-mcp
 ```
 
 ### Authentication Management
@@ -193,7 +181,7 @@ poetry run pmind-youtube-mcp
 To re-authenticate or update credentials:
 
 ```bash
-poetry run pmind-youtube-mcp --auth
+uv run pmind-youtube-mcp --auth
 ```
 
 ## Tool Reference
