@@ -163,18 +163,12 @@ claude mcp add pmind-youtube-mcp -- uv run --directory /path/to/pmind-youtube-mc
 
 Once configured, you can start using the YouTube MCP server through your client. The server will automatically start when your client connects.
 
+### Tool Reference
+For a complete list of all tools with detailed parameters and examples, see [TOOLS.md](TOOLS.md).
+
 ### Example Prompts
 
 For comprehensive examples of how to use each tool, see [PROMPTS.md](PROMPTS.md).
-
-### Manual Server Testing
-
-To test the server manually:
-
-```bash
-# Run the MCP server
-uv run pmind-youtube-mcp
-```
 
 ### Authentication Management
 
@@ -184,72 +178,11 @@ To re-authenticate or update credentials:
 uv run pmind-youtube-mcp --auth
 ```
 
-## Tool Reference
+### Manual Server Testing
 
-For a complete list of all 63 available tools with detailed parameters and examples, see [TOOLS.md](TOOLS.md).
+To test the server manually:
 
-### Understanding YouTube IDs
-
-- **Video ID**: The part after `v=` in URLs like `youtube.com/watch?v=dQw4w9WgXcQ`
-- **Channel ID**: Usually starts with `UC` and is 24 characters long
-- **Playlist ID**: Usually starts with `PL` or `UU` and is 34 characters long
-
-### Common Use Cases
-
-1. **Research and Analysis**
-   - Search for videos on a topic and analyze their metadata
-   - Compare view counts and engagement across videos
-   - Study channel growth by examining video publication dates
-
-2. **Content Discovery**
-   - Find popular videos in a niche
-   - Explore channels with specific content
-   - Browse curated playlists
-
-3. **Transcript Analysis**
-   - Extract transcripts for accessibility
-   - Analyze video content without watching
-   - Translate content using transcripts
-
-4. **Channel Monitoring**
-   - Track new uploads from specific channels
-   - Monitor channel statistics
-   - Analyze upload patterns
-
-### Error Handling
-
-The server will return error messages for common issues:
-- **"API quota exceeded"**: You've hit the daily limit
-- **"Resource not found"**: Invalid video/channel/playlist ID
-- **"Invalid request parameters"**: Check your input format
-- **"Transcripts are disabled"**: Video doesn't allow transcripts
-
-## API Quota Management
-
-The YouTube Data API has quota limits. This server tracks quota usage:
-
-**Read Operations (1 unit):**
-- Videos.list, Channels.list, Playlists.list
-- PlaylistItems.list, Comments.list, CommentThreads.list
-- Captions.list, ChannelSections.list, Members.list
-- MembershipsLevels.list, VideoCategories.list
-- i18nRegions.list, i18nLanguages.list
-
-**Search Operations (100 units):**
-- Search.list
-
-**Write Operations (50 units):**
-- Insert, Update, Delete operations for most resources
-- Videos.rate, Videos.reportAbuse
-- Comments.setModerationStatus
-- Watermarks.set, Watermarks.unset
-
-**Special Operations:**
-- Captions.download: No quota cost (direct download)
-- Thumbnails.set: 50 units (requires file upload)
-- ChannelBanners.insert: 50 units (requires file upload)
-
-Default quota is 10,000 units per day.
-
-
-
+```bash
+# Run the MCP server
+uv run pmind-youtube-mcp
+```
