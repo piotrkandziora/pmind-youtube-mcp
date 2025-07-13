@@ -271,9 +271,8 @@ GEMINI_MODEL={gemini_model}
     
     # Ask if user wants to paste client credentials now
     print("\n" + "=" * 40)
-    print(f"\nDo you want to paste your OAuth client credentials JSON from Google Cloud Console?")
-    print(f"It will be saved to: {client_secrets_path}")
-    paste_now = input("[y/N]: ").strip().lower()
+    paste_prompt = f"\nDo you want to paste your OAuth client credentials JSON from Google Cloud Console? It will be saved to: {client_secrets_path} [y/N]: "
+    paste_now = input(paste_prompt).strip().lower()
     
     if paste_now == 'y':
         print("\nPaste the OAuth 2.0 client credentials JSON from Google Cloud Console")
