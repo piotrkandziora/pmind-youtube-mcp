@@ -1,6 +1,6 @@
 # PMIND YouTube MCP Server
 
-> ⚠️ **Alpha Software**: This MCP server is in early alpha stage and may have rough edges. Please report any issues you encounter.
+> ⚠️ **Experimental**: This MCP server is in an experimental state and may have rough edges. Please report any issues you encounter.
 
 A Python implementation of the YouTube MCP (Model Context Protocol) server using FastMCP. This server provides comprehensive tools to interact with YouTube Data API v3, fetch video transcripts, and analyze content with Gemini AI integration.
 
