@@ -16,6 +16,10 @@ class Config(BaseModel):
     gemini_model: str = Field(description="Default Gemini model to use")
     gemini_api_key: Optional[str] = Field(default=None, description="Gemini API key for AI integration")
     upload_state_dir: str = Field(description="Directory for storing upload state files")
+    screenshot_default_quality: Optional[str] = Field(
+        default=None, 
+        description="Default quality for video screenshots (144p, 240p, 360p, 480p, 720p, 1080p, best). Default: 1080p if not set"
+    )
     
     
     @classmethod
@@ -45,6 +49,7 @@ class Config(BaseModel):
             raw_transcript_lang=os.environ.get("YOUTUBE_RAW_TRANSCRIPT_LANG"),
             gemini_model=os.environ.get("GEMINI_MODEL"),
             gemini_api_key=os.environ.get("GEMINI_API_KEY"),
-            upload_state_dir=os.environ.get("YOUTUBE_UPLOAD_STATE_DIR")
+            upload_state_dir=os.environ.get("YOUTUBE_UPLOAD_STATE_DIR"),
+            screenshot_default_quality=os.environ.get("YOUTUBE_SCREENSHOT_DEFAULT_QUALITY")
         )
     

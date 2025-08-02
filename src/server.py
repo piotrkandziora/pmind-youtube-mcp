@@ -12,7 +12,8 @@ from .services import (
     videos, channels, playlists, transcripts, subscriptions, search,
     captions, channel_banners, channel_sections, comments, comment_threads,
     members, memberships_levels, playlist_items, playlist_images,
-    thumbnails, video_categories, watermarks, i18n_regions, i18n_languages, gemini
+    thumbnails, video_categories, watermarks, i18n_regions, i18n_languages, gemini,
+    video_screenshots
 )
 from .utils import YouTubeClient
 
@@ -127,6 +128,9 @@ Metadata:
 Other:
 - transcripts_get_transcript: Get raw transcript/captions from YouTube (no auth required)
 
+Video Screenshots:
+- video_screenshot_at_timestamp: Capture screenshot from video at specific timestamp
+
 Gemini AI Integration:
 - gemini_analyze_youtube_video: Analyze YouTube videos using Gemini AI
 - gemini_compare_youtube_videos: Compare multiple YouTube videos (2-10)
@@ -137,6 +141,7 @@ Configuration:
 - CONFIG_DIR: Configuration directory containing client_secrets.json and token.json
 - YOUTUBE_RAW_TRANSCRIPT_LANG: Default language for raw transcripts (default: 'en')
 - YOUTUBE_UPLOAD_STATE_DIR: Directory for upload state files (default: '/tmp/pmind-youtube-mcp-uploads')
+- YOUTUBE_SCREENSHOT_DEFAULT_QUALITY: Default quality for screenshots (144p/240p/360p/480p/720p/1080p/best, default: 1080p)
 - GEMINI_MODEL: Default Gemini model to use (default: 'gemini-2.5-flash')
 - GEMINI_API_KEY: API key for Gemini AI integration
 
@@ -178,6 +183,7 @@ OAuth Authentication:
     i18n_regions.register_tools(mcp, config, youtube_client)
     i18n_languages.register_tools(mcp, config, youtube_client)
     transcripts.register_tools(mcp, config)
+    video_screenshots.register_tools(mcp, config, youtube_client)
     gemini.register_tools(mcp, config)
     
     return mcp
@@ -221,6 +227,8 @@ def configure_interactive():
     if not gemini_model:
         gemini_model = "gemini-2.5-flash"
     
+    screenshot_quality = input("Default screenshot quality (144p/240p/360p/480p/720p/1080p/best) [1080p]: ").strip()
+    
     # Create directories
     print("\nCreating directories...")
     directories_to_create = set()
@@ -252,6 +260,12 @@ YOUTUBE_RAW_TRANSCRIPT_LANG={transcript_lang}
 
 # Directory for upload state files
 YOUTUBE_UPLOAD_STATE_DIR={upload_dir}
+"""
+    
+    if screenshot_quality:
+        env_content += f"""
+# Default quality for video screenshots
+YOUTUBE_SCREENSHOT_DEFAULT_QUALITY={screenshot_quality}
 """
     
     if gemini_key:
