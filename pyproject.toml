@@ -23,6 +23,8 @@ dependencies = [
     "google>=3.0.0,<4",
     "google-genai>=0.1.0,<0.2",
     "psutil>=7.0.0,<8",
+    "yt-dlp>=2024.1.0",
+    "opencv-python>=4.8.0,<5",
 ]
 
 [project.scripts]

@@ -20,6 +20,7 @@ This MCP server provides comprehensive access to YouTube Data API v3 with additi
 - **🎨 Media**: Upload thumbnails and manage watermarks
 - **📊 Metadata**: Access categories, regions, and languages
 - **🤖 AI Analysis**: Analyze videos with Gemini AI
+- **📸 Screenshots**: Capture frames from videos at specific timestamps
 
 ### ✨ Key Features
 
@@ -28,6 +29,7 @@ This MCP server provides comprehensive access to YouTube Data API v3 with additi
 - **📡 Comprehensive YouTube API Coverage**: Complete implementation of YouTube Data API v3 - videos, channels, playlists, comments, captions, subscriptions, and more
 - **🧠 AI-Powered Video Analysis**: Gemini integration for video content analysis, Q&A, and transcript generation
 - **📄 Raw Transcript Support**: Extract existing YouTube transcripts via youtube-transcript-api without API quota usage
+- **📸 Video Screenshots**: Extract frames at specific timestamps without API quota usage
 
 ## Installation & Setup
 
@@ -161,6 +163,7 @@ Required:
 
 Optional:
 - `GEMINI_API_KEY`: API key for Gemini AI integration (only required if using Gemini tools)
+- `YOUTUBE_SCREENSHOT_DEFAULT_QUALITY`: Default video quality for screenshots (144p, 240p, 360p, 480p, 720p, 1080p, best) - defaults to 1080p
 
 ## Usage
 
